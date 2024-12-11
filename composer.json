@@ -1,0 +1,22 @@
+
+{
+  "name": "ashokkasti/test-php-repo",
+  "type": "project",
+  "require": {
+    "firebase/php-jwt": "^6.10",
+    "aws/aws-sdk-php": "^3.324",
+    "monolog/monolog": "^3.7",
+    "phpmailer/phpmailer": "^6.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ashokkasti\\TestPhpRepo\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Ashok Kasti",
+      "email": "ashokkasti@gmail.com"
+    }
+  ]
+}
