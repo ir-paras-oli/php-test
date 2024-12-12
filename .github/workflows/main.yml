@@ -97,7 +97,7 @@ jobs:
           composer config --global disable-tls true
 
       - name: Run PSE Action
-        uses: invisirisk/pse-action@v1.0.7
+        uses: invisirisk/pse-action@v1.0.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           SCAN_ID: ${{ needs.create_scan_in_IR_Portal.outputs.scan_id }}
