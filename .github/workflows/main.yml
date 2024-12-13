@@ -1,4 +1,4 @@
-name: Build NPM Package
+name: Build COMPOSER Package
 on:
   push:
     branches: [ main ]
@@ -85,17 +85,18 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev zip unzip git apache2
-
+          
       - name: Install Composer
         run: |
           php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
           php composer-setup.php --install-dir=/usr/local/bin --filename=composer
           php -r "unlink('composer-setup.php');"
-          
+        continue-on-error: false   # This will cause the step to fail if Composer installation fails
+
       - name: Disable tls
         run: |
           composer config --global disable-tls true
-
+          
       - name: Run PSE Action
         uses: invisirisk/pse-action@v1.0.8
         with:
@@ -112,8 +113,11 @@ jobs:
 
       - name: User http for packagist
         run: composer config -g repo.packagist composer http://repo.packagist.org
+
       - name: Install project dependencies
-        run: composer install --no-scripts --no-autoloader --prefer-dist --no-cache
+        run: |
+          composer install --no-scripts --no-autoloader --prefer-dist --no-cache
+        continue-on-error: false  # This will stop the workflow if install fails
 
       - name: Generate optimized autoload files
         run: composer dump-autoload --optimize
