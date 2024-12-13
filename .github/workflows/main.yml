@@ -91,7 +91,7 @@ jobs:
           php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
           php composer-setup.php --install-dir=/usr/local/bin --filename=composer
           php -r "unlink('composer-setup.php');"
-        continue-on-error: false   # This will cause the step to fail if Composer installation fails
+        #continue-on-error: false   # This will cause the step to fail if Composer installation fails
 
       - name: Disable tls
         run: |
@@ -117,7 +117,7 @@ jobs:
       - name: Install project dependencies
         run: |
           composer install --no-scripts --no-autoloader --prefer-dist --no-cache
-        continue-on-error: false  # This will stop the workflow if install fails
+        #continue-on-error: false  # This will stop the workflow if install fails
 
       - name: Generate optimized autoload files
         run: composer dump-autoload --optimize
