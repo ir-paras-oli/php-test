@@ -34,10 +34,10 @@ jobs:
           php -r "unlink('composer-setup.php');"
         #continue-on-error: false   # This will cause the step to fail if Composer installation fails
 
-      - name: Install dependencies using Composer
+      - name: Install project dependencies
         run: |
-          # Install dependencies (will skip if already installed)
-          composer install --no-interaction --prefer-dist --optimize-autoloader
+          composer install --no-scripts --no-autoloader --prefer-dist --no-cache
+        #continue-on-error: false  # This will stop the workflow if install fails
 
       - name: Display Installed Dependencies
         run: |
