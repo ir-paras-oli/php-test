@@ -21,11 +21,18 @@ jobs:
         with:
           php-version: '8.0'  # Set your preferred PHP version here
           extensions: mbstring, intl, bcmath # You can add other extensions if required
+          
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev zip unzip git apache2
 
       - name: Install Composer
         run: |
-          curl -sS https://getcomposer.org/installer | php
-          sudo mv composer.phar /usr/local/bin/composer
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+          php -r "unlink('composer-setup.php');"
+        #continue-on-error: false   # This will cause the step to fail if Composer installation fails
 
       - name: Install dependencies using Composer
         run: |
