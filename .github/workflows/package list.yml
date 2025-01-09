@@ -1,4 +1,4 @@
-name: PHP Dependency Installation and Display
+name: PHP Build and Test
 
 on:
   push:
@@ -13,47 +13,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
+      # Step 2: Set up PHP environment
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'  # Set your preferred PHP version here
-          extensions: mbstring, intl, bcmath # You can add other extensions if required
-          
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev zip unzip git apache2
+          php-version: '8.0'  # Specify your PHP version here
+          extensions: mbstring, intl, curl, xml  # Optional PHP extensions you may need
+          coverage: xdebug
 
+      # Step 3: Install Composer (if not already installed by setup-php)
       - name: Install Composer
         run: |
-          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-          php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-          php -r "unlink('composer-setup.php');"
-        #continue-on-error: false   # This will cause the step to fail if Composer installation fails
+          curl -sS https://getcomposer.org/installer | php
+          mv composer.phar /usr/local/bin/composer
 
-      - name: Install project dependencies
-        run: |
-          composer install --no-scripts --no-autoloader --prefer-dist --no-cache
-        #continue-on-error: false  # This will stop the workflow if install fails
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction
 
-      - name: Generate optimized autoload files
-        run: composer dump-autoload --optimize
+      # Step 5: Show list of installed dependencies
+      - name: List installed dependencies
+        run: composer show
 
-      - name: Set permissions
-        run: sudo chown -R www-data:www-data .
-
-      - name: Enable Apache mod_rewrite
-        run: sudo a2enmod rewrite
-
-      - name: Start Apache (if needed)
-        run: |
-          sudo service apache2 start
-          sudo apache2ctl configtest
-
-      - name: Display Installed Dependencies
-        run: |
-          echo "Installed Composer dependencies:"
-          composer show
+      # Step 6: Run tests (e.g., PHPUnit, or any other test framework)
+      - name: Run PHPUnit tests
+        run: vendor/bin/phpunit --configuration phpunit.xml  # Adjust this based on your testing setup
