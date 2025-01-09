@@ -39,6 +39,20 @@ jobs:
           composer install --no-scripts --no-autoloader --prefer-dist --no-cache
         #continue-on-error: false  # This will stop the workflow if install fails
 
+      - name: Generate optimized autoload files
+        run: composer dump-autoload --optimize
+
+      - name: Set permissions
+        run: sudo chown -R www-data:www-data .
+
+      - name: Enable Apache mod_rewrite
+        run: sudo a2enmod rewrite
+
+      - name: Start Apache (if needed)
+        run: |
+          sudo service apache2 start
+          sudo apache2ctl configtest
+
       - name: Display Installed Dependencies
         run: |
           echo "Installed Composer dependencies:"
