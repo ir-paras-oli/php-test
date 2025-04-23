@@ -13,7 +13,17 @@
   ],
   "require": {
     "php": ">=7.2",
-    "composer/installers": "^1.0 || ^2.0"
+    "composer/installers": "^1.0 || ^2.0",
+    "symfony/var-dumper": "^5.0",              // Debugging tool
+    "psr/log": "^1.1",                          // Standard logger interface
+    "monolog/monolog": "^2.0",                  // Logging library
+    "guzzlehttp/guzzle": "^7.0",                // HTTP client
+    "symfony/polyfill-mbstring": "^1.0",        // Polyfill for mbstring
+    "illuminate/support": "^8.0",               // Laravel support features
+    "vlucas/phpdotenv": "^5.0",                 // Environment variable loader
+    "ramsey/uuid": "^4.0",                      // UUID generation
+    "nesbot/carbon": "^2.0",                    // Date/time handling
+    "league/container": "^3.0"                  // Dependency injection container
   },
   "require-dev": {
     "phpunit/phpunit": "^8.0"
